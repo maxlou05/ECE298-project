@@ -23,6 +23,7 @@ module tt_um_example (
 
   // List all unused inputs to prevent warnings
   wire _unused = &{ena, clk, rst_n, 1'b0};
+    wire more_unused = &{ui_in, uio_in};
 
     // 3-bit counter with tristate output
     reg [2:0] count;
@@ -37,8 +38,8 @@ module tt_um_example (
     end
     
     // Tristate output buffer, let ui_in[0] be the enable signal
-    assign uo_out[2:0] = ui_in[0] ? count : 3'bz;
-    assign uo_out[7:3] = 0;
+    assign temp = {5'b00000, count};
+    assign uo_out = ui_in[0] ? temp : '8bz
     assign uio_out = 0;
     assign uio_oe = 0;
 
