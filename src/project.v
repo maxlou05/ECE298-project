@@ -16,12 +16,30 @@ module tt_um_example (
     input  wire       rst_n     // reset_n - low to reset
 );
 
-  // All output pins must be assigned. If not used, assign to 0.
-  assign uo_out  = ui_in + uio_in;  // Example: ou_out is the sum of ui_in and uio_in
-  assign uio_out = 0;
-  assign uio_oe  = 0;
+  // // All output pins must be assigned. If not used, assign to 0.
+  // assign uo_out  = ui_in + uio_in;  // Example: ou_out is the sum of ui_in and uio_in
+  // assign uio_out = 0;
+  // assign uio_oe  = 0;
 
   // List all unused inputs to prevent warnings
   wire _unused = &{ena, clk, rst_n, 1'b0};
+
+    // 3-bit counter with tristate output
+    reg [2:0] count;
+    
+    // Synchronous counter logic with reset
+    always @(posedge clk) begin
+        if (!rst_n)
+            // Reset to 0 if press reset
+            count <= 3'b000;
+        else
+            count <= count + 1;
+    end
+    
+    // Tristate output buffer, let ui_in[0] be the enable signal
+    assign uo_out[2:0] = ui_in[0] ? count : 3'bz;
+    assign uo_out[7:3] = 0;
+    assign uio_out = 0;
+    assign uio_oe = 0;
 
 endmodule
