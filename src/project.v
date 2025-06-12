@@ -38,8 +38,7 @@ module tt_um_example (
     end
     
     // Tristate output buffer, let ui_in[0] be the enable signal
-    assign temp = {5'b00000, count};
-    assign uo_out = ui_in[0] ? temp : '8bz
+    assign uo_out = ui_in[0] ? ({5'b00000, count}) : 8'bz;
     assign uio_out = 0;
     assign uio_oe = 0;
 
